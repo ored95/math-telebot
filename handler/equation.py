@@ -2,7 +2,6 @@
 Equation solution handler
 """
 from function import Function
-from enum import IntEnum
 
 class Equation:
     def __init__(self, txt):
