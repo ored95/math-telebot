@@ -25,7 +25,7 @@ class Equation:
                 return True     # periodic functions
         return False            # normal functions
                 
-def is_interval(f, x1, x2, eps):
+def is_interval(f, x1, x2, eps=1e-10):
     try:
         f1, f2 = f(x1), f(x2)
         if abs(f2) < eps:
@@ -76,7 +76,7 @@ def root(f, method, intervals, eps=1e-10):
 # TODO
 # e = Equation("t-sin(t)=1")    # periodic function
 # e = Equation("exp(t)=t+1")    # OverflowError: math range error
-equations = ["t-sin(t)=1"] #"7x^2-x+3 = 4x^4+1", "x^2=3x-2", "x^2=1", "x^3-3x^2=-3x+1", "2^x/x^3=x+1", "1/x=3"]
+equations = ["1/x=0", "exp(x^2-sin(x))=x+1"] #"7x^2-x+3 = 4x^4+1", "x^2=3x-2", "x^2=1", "x^3-3x^2=-3x+1", "2^x/x^3=x+1", "1/x=3"]
 for eqn in equations:
     f = Equation.func(eqn)
     if f is not None:
@@ -85,7 +85,7 @@ for eqn in equations:
             lhs, rhs = -pi, pi
         start = time.time()
         intervals = search_intervals(f, lhs, rhs)
-        roots = root(f, binary_searching, intervals)
+        roots = root(f, binary_searching, intervals, eps=1e-18)
         print(f'\nEQN: {eqn} ({time.time() - start:.5f} sec.)')
         print(roots)
     else:
