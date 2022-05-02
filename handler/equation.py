@@ -3,6 +3,7 @@ Equation solution handler
 """
 from function import Function
 from methods import *
+from math import pi
 import time
 
 class Equation:
@@ -15,7 +16,15 @@ class Equation:
             return Function.extract(txt)
         except SyntaxError:
             return None
-
+    
+    @staticmethod
+    def fType(txt, spec_funcs = ["sin", "cos", "tan"]):
+        txt = txt.lower()
+        for _type in spec_funcs:
+            if txt.find(_type) == -1:
+                return True     # periodic functions
+        return False            # normal functions
+                
 def is_interval(f, x1, x2, eps):
     try:
         f1, f2 = f(x1), f(x2)
@@ -67,12 +76,15 @@ def root(f, method, intervals, eps=1e-10):
 # TODO
 # e = Equation("t-sin(t)=1")    # periodic function
 # e = Equation("exp(t)=t+1")    # OverflowError: math range error
-equations = ["exp(t)=t+1"] #"7x^2-x+3 = 4x^4+1", "x^2=3x-2", "x^2=1", "x^3-3x^2=-3x+1", "2^x/x^3=x+1", "1/x=3"]
+equations = ["t-sin(t)=1"] #"7x^2-x+3 = 4x^4+1", "x^2=3x-2", "x^2=1", "x^3-3x^2=-3x+1", "2^x/x^3=x+1", "1/x=3"]
 for eqn in equations:
     f = Equation.func(eqn)
     if f is not None:
+        lhs, rhs = -1e3, 1e3
+        if Equation.fType(eqn):
+            lhs, rhs = -pi, pi
         start = time.time()
-        intervals = search_intervals(f, -1e3, 1e3)
+        intervals = search_intervals(f, lhs, rhs)
         roots = root(f, binary_searching, intervals)
         print(f'\nEQN: {eqn} ({time.time() - start:.5f} sec.)')
         print(roots)
