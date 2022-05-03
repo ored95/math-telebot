@@ -21,7 +21,7 @@ class Equation:
     def fType(txt, spec_funcs = ["sin", "cos", "tan"]):
         txt = txt.lower()
         for _type in spec_funcs:
-            if txt.find(_type) == -1:
+            if txt.find(_type) != -1:
                 return True     # periodic functions
         return False            # normal functions
                 
@@ -58,7 +58,8 @@ def search_intervals(f, lhs, rhs, dx=0.083, eps=1e-10):
         res = is_interval(f, x, x+dx, eps)
         if res is not None:
             intervals.append(res)
-            x = res[0]
+            if x != res[0]:
+                x += dx
         x += dx
     return intervals
         
@@ -70,23 +71,32 @@ def root(f, method, intervals, eps=1e-10):
         else:
             root = method(f, lhs, rhs, f(rhs), eps)
             if root is not None:
-                roots.append(root)
+                if len(roots) == 0 or (len(roots) != 0 and abs(root - roots[-1]) > eps):
+                    roots.append(root)
     return roots
 
-# TODO
-# e = Equation("t-sin(t)=1")    # periodic function
-# e = Equation("exp(t)=t+1")    # OverflowError: math range error
-equations = ["1/x=0", "exp(x^2-sin(x))=x+1"] #"7x^2-x+3 = 4x^4+1", "x^2=3x-2", "x^2=1", "x^3-3x^2=-3x+1", "2^x/x^3=x+1", "1/x=3"]
+
+
+equations = open('test').readlines()
+
 for eqn in equations:
     f = Equation.func(eqn)
     if f is not None:
+        eps = 1e-18
         lhs, rhs = -1e3, 1e3
         if Equation.fType(eqn):
             lhs, rhs = -pi, pi
+        
         start = time.time()
         intervals = search_intervals(f, lhs, rhs)
-        roots = root(f, binary_searching, intervals, eps=1e-18)
-        print(f'\nEQN: {eqn} ({time.time() - start:.5f} sec.)')
-        print(roots)
+        print(f'\nEQN: {eqn} (intervals [{len(intervals)}]: {time.time() - start:.5f} sec.)')
+        
+        start = time.time()
+        roots = root(f, binary_searching, intervals, eps)
+        print(f'Binary searching({time.time() - start:.5f} sec.): {roots}')
+        
+        start = time.time()
+        roots = root(f, secant, intervals, eps)
+        print(f'Secant({time.time() - start:.5f} sec.): {roots}')
     else:
         print("Error: can not recognize that function")
