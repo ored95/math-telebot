@@ -1,4 +1,6 @@
-    
+from re import X
+from scipy import optimize
+
 def binary_searching(f, lhs, rhs, frhs, eps):
     mid = (lhs + rhs) / 2.
     fmid = f(mid)
@@ -28,3 +30,10 @@ def secant(f, lhs, rhs, frhs, eps):
     if abs(f(mid)) < 1e-8: 
         return (lhs + rhs) / 2.
     return None
+
+def brentq(f, lhs, rhs, frhs, eps):
+    x = optimize.brentq(f, lhs, rhs, xtol=eps)
+    # if abs(f(x)) < eps:
+    #     return x
+    # return None
+    return x

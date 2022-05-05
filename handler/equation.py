@@ -3,7 +3,7 @@ Equation solution handler
 """
 from function import Function
 from methods import *
-from math import pi
+from math import pi, inf
 import time
 
 class Equation:
@@ -71,7 +71,9 @@ def root(f, method, intervals, eps=1e-10):
         else:
             root = method(f, lhs, rhs, f(rhs), eps)
             if root is not None:
-                if len(roots) == 0 or (len(roots) != 0 and abs(root - roots[-1]) > eps):
+                if abs(f(root)) < 1e-5 and (len(roots) == 0 or (len(roots) != 0 and abs(root - roots[-1]) > eps)):
+                    if root > 1e12: root = inf
+                    if root < -1e12: root = -inf
                     roots.append(root)
     return roots
 
@@ -98,5 +100,9 @@ for eqn in equations:
         start = time.time()
         roots = root(f, secant, intervals, eps)
         print(f'Secant({time.time() - start:.5f} sec.): {roots}')
+
+        start = time.time()
+        roots = root(f, brentq, intervals, eps)
+        print(f'Brent({time.time() - start:.5f} sec.): {roots}')
     else:
         print("Error: can not recognize that function")
