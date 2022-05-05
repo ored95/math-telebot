@@ -13,6 +13,8 @@ class Request:
         ans = None
         if msg[:3] == '/eq':
             ans = '/eq'
+            if 'bst'.find(msg[3]) != -1:
+                ans += msg[3]
         elif msg[:6] == '/integ':
             ans = '/integ'
         elif msg[:4] == '/app':

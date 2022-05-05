@@ -41,4 +41,5 @@ class Function:
         tmp = tmp.replace('(*', '(')    # (x ...)
         tmp = tmp.replace('***', '**')  # ...^x
         tmp = tmp.replace(')(', ')*(')  # ...)(...
+        print(f'Equation: {tmp}')   # TODO: x(x-1) = 2, x^2(x-1) = 2
         return lambda x: eval(tmp)

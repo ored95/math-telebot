@@ -1,4 +1,3 @@
-from re import X
 from scipy import optimize
 
 def binary_searching(f, lhs, rhs, frhs, eps):
@@ -32,5 +31,4 @@ def secant(f, lhs, rhs, frhs, eps):
     return None
 
 def brentq(f, lhs, rhs, frhs, eps):
-    x = optimize.brentq(f, lhs, rhs, xtol=eps)
-    return x
+    return optimize.brentq(f, lhs, rhs, xtol=eps)
