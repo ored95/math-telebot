@@ -33,7 +33,4 @@ def secant(f, lhs, rhs, frhs, eps):
 
 def brentq(f, lhs, rhs, frhs, eps):
     x = optimize.brentq(f, lhs, rhs, xtol=eps)
-    # if abs(f(x)) < eps:
-    #     return x
-    # return None
     return x
