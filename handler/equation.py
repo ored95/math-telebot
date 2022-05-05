@@ -1,6 +1,9 @@
 """
 Equation solution handler
 """
+from typing_extensions import runtime
+
+from aem import app
 from function import Function
 from methods import *
 from math import pi, inf
@@ -77,32 +80,29 @@ def root(f, method, intervals, eps=1e-10):
                     roots.append(root)
     return roots
 
-
-
-equations = open('test').readlines()
-
-for eqn in equations:
-    f = Equation.func(eqn)
+def eq(equation, methods=[binary_searching, secant, brentq]):
+    f = Equation.func(equation)
     if f is not None:
         eps = 1e-18
         lhs, rhs = -1e3, 1e3
-        if Equation.fType(eqn):
+        if Equation.fType(equation):
             lhs, rhs = -pi, pi
-        
         start = time.time()
         intervals = search_intervals(f, lhs, rhs)
-        print(f'\nEQN: {eqn} (intervals [{len(intervals)}]: {time.time() - start:.5f} sec.)')
-        
-        start = time.time()
-        roots = root(f, binary_searching, intervals, eps)
-        print(f'Binary searching({time.time() - start:.5f} sec.): {roots}')
-        
-        start = time.time()
-        roots = root(f, secant, intervals, eps)
-        print(f'Secant({time.time() - start:.5f} sec.): {roots}')
+        interval_time = time.time() - start
+        roots = []
+        runtimes = []
+        for method in methods:
+            start = time.time()
+            roots.append(root(f, method, intervals, eps))
+            runtimes.append(time.time() - start)
+        return roots, runtimes, interval_time
+    return None
 
-        start = time.time()
-        roots = root(f, brentq, intervals, eps)
-        print(f'Brent({time.time() - start:.5f} sec.): {roots}')
-    else:
-        print("Error: can not recognize that function")
+equation = "x^2*sin(2x)-1=x^3-3x-1"
+solution = eq(equation, methods=[binary_searching, brentq])
+if solution is not None:
+    print(f'Roots: {solution[0]}')
+    print(f'Times: {solution[1]}')
+else:
+    print("Error: can not recognize that function")
