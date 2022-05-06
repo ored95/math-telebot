@@ -33,18 +33,42 @@ class Approximation:
         except:
             raise Exception('Parse arguments failed')
 
-    def interp_help(self, x_value, method=Newton):
-        return method.interp(x_value, self.X, self.Y)
+    def interp_help(self, x_value, algo='ne'):  # cmd: /appv
+        y_value = None
+        if algo == 'ne':
+            newton = Newton(self.X, self.Y)
+            y_value = [{
+                'algo': newton.__str__(),
+                'value': newton.interp(x_value)
+            }]
+        if algo == 'cs':
+            cspline = CubicSpline(self.X, self.Y)
+            y_value = [{
+                'algo': cspline.__str__(),
+                'value': cspline.interp(x_value)
+            }]
+        if algo == 'lsm':
+            y_value = []
+            for n in range(1, 7):
+                lsm = LSM(self.X, self.Y, n)
+                item = {
+                    'algo': lsm.__str__(),
+                    'value': lsm.interp(x_value)
+                }
+                y_value.append(item)
+        return y_value
         
-    def interp(self, txt, methods=[Newton]):
+    def interp(self, txt, algos=['ne', 'cs', 'lsm']):   # cmd: /appv
         try:
             x_value = float(txt)
             res = []
-            for method in methods:
-                res.append(self.interp_help(x_value, method))
+            for algo in algos:
+                res.extend(self.interp_help(x_value, algo))
             return res
         except:
             raise Exception('unable to convert to float type')    
-        
-app = Approximation('x:1, 2,3, 4 y:0.1, 0.4, 0.9, 1.6')
-print(app.interp('2.5'))
+
+# Example        
+# app = Approximation('x:1, 2,3, 4 y:0.1, 0.4, 0.9, 1.6')
+# for item in app.interp('2.5', algos=['ne', 'lsm']):
+#     print(f'{item["algo"]}: {item["value"]}')

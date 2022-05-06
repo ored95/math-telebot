@@ -2,7 +2,6 @@
 Integral calculation handler
 """
 from function import Function
-
 class Integral:
     def __init__(self, txt):
         # preprocessing 
@@ -43,11 +42,12 @@ class Integral:
             a += dx
         return s * dx
     
-try:
-    tmp = Integral('x^2-1, -1, 1')
-    print(Integral.trapezoid(tmp.func, tmp.a, tmp.b))
-    print(Integral.simpson(tmp.func, tmp.a, tmp.b))
-    print(Integral.rectange(tmp.func, tmp.a, tmp.b, flag='r'))
-    print(Integral.rectange(tmp.func, tmp.a, tmp.b, flag='l'))
-except Exception as e:
-    print(e)
+# Example
+# try:
+#     tmp = Integral('x^2-1, -1, 1')
+#     print(Integral.trapezoid(tmp.func, tmp.a, tmp.b))
+#     print(Integral.simpson(tmp.func, tmp.a, tmp.b))
+#     print(Integral.rectange(tmp.func, tmp.a, tmp.b, flag='r'))
+#     print(Integral.rectange(tmp.func, tmp.a, tmp.b, flag='l'))
+# except Exception as e:
+#     print(e)

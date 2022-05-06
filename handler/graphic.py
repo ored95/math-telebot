@@ -2,38 +2,41 @@
 Graphic handler
 """
 from approximation_help import *
+from equation import *
+from integral import *
 import numpy as np
 import matplotlib.pyplot as plt
+
 class Graphic:
     @staticmethod
-    def plot(x, y, legends=['Newton', 'CubicSpline', 'LSM'], npt=1000):
+    def plotApp(x, y, legends=['ne', 'cs', 'lsm'], npt=1000):
         gpc = list()
-        if 'Newton' in legends:
+        if 'ne' in legends:
             newton = Newton(x, y)
             px, py = newton.get_plot_points(npt)
             item = {
-                'legend': 'Newton',
+                'legend': newton.__str__(),
                 'X': px,
                 'Y': py
             }
             gpc.append(item)
-        if 'CubicSpline' in legends:
+        if 'cs' in legends:
             cspline = CubicSpline(x, y)
             px, py = cspline.get_plot_points(npt)
             item = {
-                'legend': 'Cubic Spline',
+                'legend': cspline.__str__(),
                 'X': px,
                 'Y': py
             }
             gpc.append(item)
-        if 'LSM' in legends:
+        if 'lsm' in legends:
             # err = []
-            for n in range(7, 0, -1):
+            for n in range(7, 0, -2):
                 lsm = LSM(x, y, n)
                 # err.append(lsm.mse())
                 px, py = lsm.get_plot_points(npt)
                 item = {
-                    'legend': f'LSM (n={n})',
+                    'legend': lsm.__str__(),
                     'X': px,
                     'Y': py
                 }
@@ -43,15 +46,30 @@ class Graphic:
         plt.title('2D-Approximation')
         plt.grid()
         plt.plot(x, y, 'go', markersize=12)
-        for item in gpc[:3]:
+        for item in gpc:
             plt.plot(item['X'], item['Y'], label=item['legend'])
         plt.legend(loc="upper left")
         return plt#, err    
 
+    @staticmethod
+    def plotFunc(f, a=1e-3, b=1e-3, npt=1000, title='Function'):
+        px = np.linspace(a, b, npt)
+        py = [f(x) for x in px]
+        plt.title(title)
+        plt.grid()
+        plt.plot(px, py)
+        return plt
 
 # Example
 # x = [1, 2, 3, 5, 6, 8]
 # y = [0.1, 0.4, 0.93, 2.7, 1.8, 1.1]
 
-# plt = Graphic.plot(x, y, npt=100)
+# plt = Graphic.plotApp(x, y, npt=100, legends=['ne', 'cs'])
 # plt.show()
+
+# plt = Graphic.plotFunc(Equation.func('x^2-3x=2'), a=-100, b=100, title='Equation')
+# plt.show()
+
+# tmp = Integral('x^2-x+2, -1, 1')
+# plt1 = Graphic.plotFunc(tmp.func, a=tmp.a, b=tmp.b, title='Integral')
+# plt1.show()

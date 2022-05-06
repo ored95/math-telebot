@@ -1,8 +1,8 @@
 """
 Equation solution handler
 """
-from .function import Function
-from .methods import *
+from function import Function
+from methods import *
 from math import pi, inf
 import time
 
@@ -96,6 +96,7 @@ def eq(equation, methods=[binary_searching, secant, brentq]):
         return roots, runtimes, interval_time
     return None
 
+# Example
 # equation = "x^2*sin(2x)-1=x^3-3x-1"
 # solution = eq(equation, methods=[binary_searching, brentq])
 # if solution is not None:

@@ -27,6 +27,9 @@ class Newton:
         self.y = [y[i] for i in idx]
         self.n = len(x)
         
+    def __str__(self):
+        return 'Newton'
+
     def ntab_diff(self):    # Newton difference table
         """
         polynomial to calculate the divided differences table
@@ -74,6 +77,9 @@ class CubicSpline:
         self.n = n-1            # number of combination (ai, bi, ci, di)
         self.h = self.compute_changes()
         self.compute_spline_coefficients()
+
+    def __str__(self):
+        return 'Cubic Spline'
 
     def interp(self, x_value):
         """
@@ -171,6 +177,9 @@ class LSM:
         self.w = np.ones(len(x))
         self.n = n
         self.c = self.get_coefficients()
+
+    def __str__(self):
+        return f'LSM (n={self.n})'
 
     def interp(self, x_value):
         """
