@@ -3,34 +3,19 @@ Approximation algos handler
 """
 import numpy as np
 
-def bsearch(value, v, n):
+def bsearch(value, v):
     """
-    binary searching to identify index of 'n' neighbor sample to 'value' in sorted vector 'v'
+    binary searching to identify index of the following neighbor to 'value' in vector
     """
-    if n < 1:           # error
-        print('Error: Unknown number samples selected.', file=sys.stderr)
-        return None, None
-    if len(v) < n:    # exception
-        return 0, len(v)-1
-
     b, e = 0, len(v) - 1
-    
     m = (b+e) // 2
     while b != e - 1:
-        if value < v[m]:
+        if value <= v[m]:
             e = m
         else:
             b = m
         m = (b+e) // 2
-
-    b -= (n-1) // 2
-    e = b + n
-    if b < 0:
-        return 0, n-1  # v[:n]
-    elif e > len(v)-1:
-        return len(v)-n, len(v)-1   # v[-n:]
-    else:
-        return b, e-1
+    return e
 
 class Newton:
     def __init__(self, x, y):
@@ -94,7 +79,7 @@ class CubicSpline:
         """
         To compute the interpolated function at x = x_value 
         """
-        _, i = bsearch(x_value, self.x, 2)
+        i = bsearch(x_value, self.x)
         z = x_value - self.x[i]
         p = self.coefficients[i-1]
         # print(f'[z={z:.2}]\tF(z) = {p[3]/6:.3f} * z^3 + {p[2]/2:.3f} * z^2 + {p[1]:.3f} * z + {p[0]:.3f}')
@@ -107,7 +92,7 @@ class CubicSpline:
         return a list of interpolated points (x, y)
         """
         px = np.linspace(min(self.x), max(self.x), npt)
-        py = self.interp(px)
+        py = [self.interp(xi) for xi in px]
         return px, py
 
     def compute_changes(self):

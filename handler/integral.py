@@ -43,7 +43,6 @@ class Integral:
             a += dx
         return s * dx
     
-    
 try:
     tmp = Integral('x^2-1, -1, 1')
     print(Integral.trapezoid(tmp.func, tmp.a, tmp.b))
