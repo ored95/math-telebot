@@ -1,8 +1,8 @@
 """
 Equation solution handler
 """
-from function import Function
-from methods import *
+from .function import Function
+from .methods import *
 from math import pi, inf
 import time
 

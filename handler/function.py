@@ -17,12 +17,12 @@ class Function:
         
         i = 0
         while True:
-            while not is_alpha(txt[i]):
+            while i < len(txt) and not is_alpha(txt[i]):
                 i += 1
             j = i+1
-            while is_alpha(txt[j]):
+            while j < len(txt) and is_alpha(txt[j]):
                 j += 1
-            if txt[i:j] not in spec_funcs:
+            if txt[i:j] not in spec_funcs or j == len(txt)-1:
                 break
             else:
                 i = j

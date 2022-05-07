@@ -1,7 +1,7 @@
 """
 2D Approximation handler
 """
-from approximation_help import *
+from .approximation_help import *
 class Approximation:
     def __init__(self, txt):    # cmd: /app x:.. y:..
         # preprocessing 

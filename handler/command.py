@@ -17,6 +17,8 @@ class Request:
                 ans += msg[3]
         elif msg[:6] == '/integ':
             ans = '/integ'
+            if 'stlr'.find(msg[6]) != -1:
+                ans += msg[6]
         elif msg[:4] == '/app':
             ans = '/app'
         elif msg[:5] == '/help':

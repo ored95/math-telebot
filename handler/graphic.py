@@ -1,15 +1,15 @@
 """
 Graphic handler
 """
-from approximation_help import *
-from equation import *
-from integral import *
+from .approximation_help import *
+from .equation import *
+from .integral import *
 import numpy as np
 import matplotlib.pyplot as plt
 
 class Graphic:
     @staticmethod
-    def plotApp(x, y, legends=['ne', 'cs', 'lsm'], npt=1000):
+    def plotApp(plt, x, y, legends=['ne', 'cs', 'lsm'], npt=1000):
         gpc = list()
         if 'ne' in legends:
             newton = Newton(x, y)
@@ -43,6 +43,7 @@ class Graphic:
                 gpc.append(item)
         
         # plt.figure(figsize=(20,16))
+        plt.clf()   # clear current figure of plot
         plt.title('2D-Approximation')
         plt.grid()
         plt.plot(x, y, 'go', markersize=12)
@@ -52,9 +53,10 @@ class Graphic:
         return plt#, err    
 
     @staticmethod
-    def plotFunc(f, a=1e-3, b=1e-3, npt=1000, title='Function'):
+    def plotFunc(plt, f, a=1e-3, b=1e-3, npt=1000, title='Function'):
         px = np.linspace(a, b, npt)
         py = [f(x) for x in px]
+        plt.clf()   # clear current figure of plot
         plt.title(title)
         plt.grid()
         plt.plot(px, py)
