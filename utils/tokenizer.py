@@ -10,3 +10,6 @@ def load_token(cfg):
 
 def load_author(cfg):
     return cfg['author']
+
+def load_version(cfg):
+    return cfg['version']

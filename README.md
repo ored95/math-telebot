@@ -4,7 +4,8 @@ Telegram bot for some mathematical problems
 ### Build and run
 ```sh
     pip install -r requirements.txt
-    python bot.py
+    [for Telegram] python bot.py
+    [for WebApp]   streamlit run app.py
 ```
 ### Clean trash
 ```sh
