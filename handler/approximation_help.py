@@ -20,7 +20,7 @@ def bsearch(value, v):
 class Newton:
     def __init__(self, x, y):
         if len(x) != len(y):
-            raise ValueError('Newton: Can not execute interpolation in case of different input-sizes')
+            raise ValueError('app: can not execute interpolation in case of different input-sizes')
         # Preprocess to claim that x is in ascending order
         idx = np.argsort(x)
         self.x = [x[i] for i in idx]
@@ -68,9 +68,9 @@ class CubicSpline:
     def __init__(self, x, y):
         n = len(x)
         if n < 3:
-            raise ValueError('Cubic Spline: Too short an array')
+            raise ValueError('Cubic Spline: too short an array')
         if n != len(y):
-            raise ValueError('Cubic Spline: Can not execute interpolation in case of different input-sizes')       
+            raise ValueError('app: Can not execute interpolation in case of different input-sizes')       
         idx = np.argsort(x)
         self.x = [x[i] for i in idx]    # input (xi, yi)
         self.y = [y[i] for i in idx]
@@ -165,9 +165,9 @@ class LSM:
     """
     def __init__(self, x, y, n=1):
         if len(x) != len(y):
-            raise ValueError('Wrong number of coordinates array lengths')
+            raise ValueError('app: can not execute interpolation in case of different input-sizes')
         elif n < 0:
-            raise ValueError('Incorrect degree of approximated polynomial f(x)')
+            raise ValueError('LSM: incorrect degree of approximated polynomial f(x)')
         self.x = x
         self.y = y
         """

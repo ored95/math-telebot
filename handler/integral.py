@@ -13,7 +13,7 @@ class Integral:
             self.a = float(args[1])
             self.b = float(args[2])
         except:
-            raise Exception('Parse arguments failed')
+            raise Exception('Bad request (integ): invalid command instruction')
 
     @staticmethod
     def trapezoid(f, a, b, N=1000):

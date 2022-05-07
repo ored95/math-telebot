@@ -1,37 +1,43 @@
 """
 2D Approximation handler
 """
+from sympy import EX
 from .approximation_help import *
 class Approximation:
-    def __init__(self, txt):    # cmd: /app x:.. y:..
+    def __init__(self, txt=None):    # cmd: /app x:.. y:..
         # preprocessing 
-        txt = txt.lower().replace(' ', '')
         self.X = []
         self.Y = []
-        try:
-            i = 0
-            while txt[i:i+2] != 'x:':
-                i += 1
-            i += 2
-            j = i
-            while txt[j:j+2] != 'y:':
-                j += 1
-            self.X = list(map(float, txt[i:j].split(sep=',')))
-            self.Y = list(map(float, txt[j+2:].split(sep=',')))    
-        except:
-            raise Exception('Parse arguments failed')
-        
+        if txt is not None:
+            txt = txt.lower().replace(' ', '')
+            if txt.find('x:') == -1 or txt.find('y:') == -1:
+                raise Exception('app: not enough parameter')
+            try:
+                i = 0
+                while txt[i:i+2] != 'x:':
+                    i += 1
+                i += 2
+                j = i
+                while txt[j:j+2] != 'y:':
+                    j += 1
+                self.X = list(map(float, txt[i:j].split(sep=',')))
+                self.Y = list(map(float, txt[j+2:].split(sep=',')))
+                if len(self.X) != len(self.Y):
+                    raise Exception('app: arguments have different size')    
+            except:
+                raise Exception('Bad request (app): invalid command instruction')
+            
     def setX(self, txt):    # cmd: /appx ..
         try:
             self.X = list(map(float, txt.split(sep=',')))
         except:
-            raise Exception('Parse arguments failed')
+            raise Exception('appx: parse arguments failed')
     
     def setY(self, txt):    # cmd: /appy
         try:
             self.Y = list(map(float, txt.split(sep=',')))
         except:
-            raise Exception('Parse arguments failed')
+            raise Exception('appy: parse arguments failed')
 
     def interp_help(self, x_value, algo='ne'):  # cmd: /appv
         y_value = None
@@ -60,13 +66,15 @@ class Approximation:
         
     def interp(self, txt, algos=['ne', 'cs', 'lsm']):   # cmd: /appv
         try:
+            if len(self.X) != len(self.Y):
+                raise Exception('app: arguments have different size')
             x_value = float(txt)
             res = []
             for algo in algos:
                 res.extend(self.interp_help(x_value, algo))
             return res
         except:
-            raise Exception('unable to convert to float type')    
+            raise Exception('app: unable to convert to float type')    
 
 # Example        
 # app = Approximation('x:1, 2,3, 4 y:0.1, 0.4, 0.9, 1.6')

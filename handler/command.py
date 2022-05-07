@@ -8,7 +8,6 @@ class Request:
         if self.cmd != None:
             self.body = msg[len(self.cmd):]
 
-    # @staticmethod
     def extract_cmd(self, msg):
         ans = None
         if msg[:3] == '/eq':
@@ -21,9 +20,9 @@ class Request:
                 ans += msg[6]
         elif msg[:4] == '/app':
             ans = '/app'
+            if 'xyv'.find(msg[4]) != -1:
+                ans += msg[4]
         elif msg[:5] == '/help':
             ans = '/help'
         return ans
-
-    def extract_arguments(self):
-        pass
+        
