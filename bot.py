@@ -59,7 +59,7 @@ def handle_eq_cmds(msg):
             methods = [brentq]
             msg = ['Brent algo']
         solution = eq(equation, methods)
-        txt = 'Error code: 401. Bad request: can not recognize that function'
+        txt = 'Error code: 400. Bad request: can not recognize that function'
         if solution is not None:
             roots, runtimes = solution[0], solution[1]
             def roots_to_str(roots):
@@ -76,6 +76,35 @@ def handle_eq_cmds(msg):
             plt1 = Graphic.plotFunc(plt, Equation.func(equation), a, b, title='Equation')
             plt1.savefig('temp/equation.png', dpi=300)
             bot.send_photo(uid, photo=open('temp/equation.png', 'rb'))
+        send_msg(uid, txt)
+    except:
+        send_msg(uid, 'Error code: 400. Bad request: invalid command instruction')
+
+@bot.message_handler(commands=['integ', 'integs', 'integt', 'integl', 'integr'])
+def handle_integ_cmds(msg):
+    uid = User.get_uid(msg)
+    try:
+        req = Request(msg.json['text'])
+        tmp = Integral(req.body)
+        methods = [Integral.simpson, Integral.trapezoid, Integral.lrectangle, Integral.rrectangle]
+        if req.cmd[-1] == 's':
+            methods = [Integral.simpson]
+        elif req.cmd[-1] == 't':
+            methods = [Integral.trapezoid]
+        elif req.cmd[-1] == 'l':
+            methods = [Integral.lrectangle]
+        elif req.cmd[-1] == 'r':
+            methods = [Integral.rrectangle]
+        results = integ(tmp.func, tmp.a, tmp.b, methods)
+        txt = '\n\n'.join([
+            f'{i+1} {results[i]["rule"]} ({results[i]["runtime"]*1e3:.2f} ms):\n{results[i]["value"]}' 
+            for i in range(len(results))
+        ])
+        if Equation.fType(req.body.split(',')[0]):
+            tmp.a, tmp.b = -pi, pi
+        plt1 = Graphic.plotFunc(plt, tmp.func, tmp.a, tmp.b, title='Integral')
+        plt1.savefig('temp/integral.png', dpi=300)
+        bot.send_photo(uid, photo=open('temp/integral.png', 'rb'))
         send_msg(uid, txt)
     except:
         send_msg(uid, 'Error code: 400. Bad request: invalid command instruction')
