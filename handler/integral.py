@@ -36,7 +36,6 @@ class Integral:
     def lrectangle(f, a, b, N=1000):
         dx = (b - a) / N
         s = 0
-        a = 0
         for _ in range(N):
             s += f(a)
             a += dx
