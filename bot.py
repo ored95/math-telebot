@@ -168,7 +168,7 @@ def run_appv(msg, algos, value=None):
         tmp = Request(msg.json['text'])
         value = tmp.body
     txt = ''
-    for item in app.interp(value, algos):
+    for item in app.interp(value, algos=algos):
         txt += f'{item["algo"]}: {item["value"]}\n'
     plt1 = Graphic.plotApp(plt, app.X, app.Y, legends=algos)
     plt1.savefig('temp/interpolation.png', dpi=300)

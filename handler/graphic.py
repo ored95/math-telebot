@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 class Graphic:
     @staticmethod
-    def plotApp(plt, x, y, legends=['ne', 'cs', 'lsm'], npt=1000):
+    def plotApp(plt, x, y, legends=['ne', 'cs', 'lsm'], minN=1, maxN=7, npt=1000):
         gpc = list()
         if 'ne' in legends:
             newton = Newton(x, y)
@@ -31,7 +31,7 @@ class Graphic:
             gpc.append(item)
         if 'lsm' in legends:
             # err = []
-            for n in range(7, 0, -2):
+            for n in range(maxN, minN-1, -1):
                 lsm = LSM(x, y, n)
                 # err.append(lsm.mse())
                 px, py = lsm.get_plot_points(npt)

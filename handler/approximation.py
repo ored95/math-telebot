@@ -39,7 +39,7 @@ class Approximation:
         except:
             raise Exception('appy: parse arguments failed')
 
-    def interp_help(self, x_value, algo='ne'):  # cmd: /appv
+    def interp_help(self, x_value, algo='ne', minrange=1, maxrange=7):  # cmd: /appv
         y_value = None
         if algo == 'ne':
             newton = Newton(self.X, self.Y)
@@ -55,7 +55,7 @@ class Approximation:
             }]
         if algo == 'lsm':
             y_value = []
-            for n in range(1, 7):
+            for n in range(minrange, maxrange+1):
                 lsm = LSM(self.X, self.Y, n)
                 item = {
                     'algo': lsm.__str__(),
@@ -64,14 +64,14 @@ class Approximation:
                 y_value.append(item)
         return y_value
         
-    def interp(self, txt, algos=['ne', 'cs', 'lsm']):   # cmd: /appv
+    def interp(self, txt, algos=['ne', 'cs', 'lsm'], minrange=1, maxrange=7):   # cmd: /appv
         try:
             if len(self.X) != len(self.Y):
                 raise Exception('app: arguments have different size')
             x_value = float(txt)
             res = []
             for algo in algos:
-                res.extend(self.interp_help(x_value, algo))
+                res.extend(self.interp_help(x_value, algo, minrange, maxrange))
             return res
         except:
             raise Exception('app: unable to convert to float type')    

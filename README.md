@@ -33,3 +33,20 @@ Telegram bot for some mathematical problems
 |5.1|/appx `x1, x2, ...`|set X-coordinate values|
 |5.2|/appy `y1, y2, ...`|set Y-coordinate values|
 |5.3|/appv `value`|get interpolated value at `x = value`|
+
+### WebApp version instruction
++ Input example
+```sh
+[Equation]
+    equation
+
+[Integral]
+    function, low_border, high_border
+
+[Approximation]
+    x: x1, x2,... y: y1, y2, ...
+```
++ Error code
+```js
+    Error code: 400. Bad request: can not recognize that expression
+```
