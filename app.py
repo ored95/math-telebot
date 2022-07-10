@@ -39,7 +39,7 @@ def equation_handler(txt):
 def integral_handler(txt):
     try:
         # [txt] function, low_border, high_border
-        st.write('## Integral')
+        st.write('## Solution')
         tmp = Integral(txt)
         methods = [Integral.simpson, Integral.trapezoid, Integral.lrectangle, Integral.rrectangle]
         results = integ(tmp.func, tmp.a, tmp.b, methods)
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     # st.balloons()
     
     txt = st.text_input("Input an expression here").lower()
-    if txt.find('x:') != -1 and txt.find('y:') != 1 and txt.find('v:') != 1:
+    if txt.find('x:') != -1 and txt.find('y:') != 1:
         approximation_handler(txt)
     elif txt.find('=') != -1:
         equation_handler(txt)
