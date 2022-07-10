@@ -77,6 +77,8 @@ def handle_eq_cmds(msg):
             if Equation.fType(equation):
                 a, b = -pi, pi
             plt1 = Graphic.plotFunc(plt, Equation.func(equation), a, b, title='Equation')
+            if len(roots) > 0:
+                plt1.plot(roots[0], np.zeros(len(roots[0])), 'r*', markersize=10)
             plt1.savefig('temp/equation.png', dpi=300)
             bot.send_photo(uid, photo=open('temp/equation.png', 'rb'))
         bot.send_message(uid, txt)

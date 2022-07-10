@@ -10,26 +10,29 @@ def equation_handler(txt):
         methods = [binary_searching, secant, brentq]
         msg = ['Binary searching algo', 'Secant algo', 'Brent algo']
         solution = eq(txt, methods)
-        ans = 'Error code: 400. Bad request: can not recognize that function'
         if solution is not None:
             roots, runtimes = solution[0], solution[1]
-            def roots_to_str(roots):
-                if len(roots) > 0:
-                    return '\n'.join([f'X{j} = {roots[j]}' for j in range(len(roots))])
-                return 'No roots.'
-            ans = '\n\n'.join([
-                f'##### {i+1} {msg[i]} ({runtimes[i]*1e3:.2f} ms):\n\n{roots_to_str(roots[i])}' 
-                for i in range(len(methods))
-            ])
+            
             a, b = -1e2, 1e2
             if Equation.fType(txt):
                 a, b = -pi, pi
             plt1 = Graphic.plotFunc(plt, Equation.func(txt), a, b, title='Equation')
             if len(roots) > 0:
-                point = roots[1]
-                plt1.plot(point, 0, 'r*', markersize=10)
+                plt1.plot(roots[1], np.zeros(len(roots[1])), 'r*', markersize=10)
             st.pyplot(plt1)
-        st.write(ans)
+            
+            def roots_to_str(roots):
+                return [f'X{j} = {roots[j]}' for j in range(len(roots))]
+                
+            for i in range(len(methods)):
+                st.write(f'##### {i+1} {msg[i]} ({runtimes[i]*1e3:.2f} ms):')
+                if len(roots[i]) > 0:
+                    for root in roots_to_str(roots[i]):
+                        st.write(root)
+                else:
+                    st.write('No roots')
+        else:
+            st.write('Error code: 400. Bad request: can not recognize that function')
     except Exception as e:
         st.warning(e.args)
 
@@ -41,7 +44,7 @@ def integral_handler(txt):
         methods = [Integral.simpson, Integral.trapezoid, Integral.lrectangle, Integral.rrectangle]
         results = integ(tmp.func, tmp.a, tmp.b, methods)
         ans = '\n\n'.join([
-            f'##### {i+1} {results[i]["rule"]} ({results[i]["runtime"]*1e3:.2f} ms):\nReturn: {results[i]["value"]}' 
+            f'##### {i+1} {results[i]["rule"]} ({results[i]["runtime"]*1e3:.2f} ms):\nAnswer: {results[i]["value"]}' 
             for i in range(len(results))
         ])
         plt1 = Graphic.plotFunc(plt, tmp.func, tmp.a, tmp.b, title='Integral')
@@ -88,7 +91,7 @@ def approximation_handler(txt):
 if __name__ == '__main__':    
     st.title('Math bot')
     st.date_input(f'Application (v.{BOT_VERSION}) by **@{BOT_AUTHOR}** is running..')
-    st.balloons()
+    # st.balloons()
     
     txt = st.text_input("Input an expression here").lower()
     if txt.find('x:') != -1 and txt.find('y:') != 1 and txt.find('v:') != 1:
